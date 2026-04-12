@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hệ thống AI Captcha</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 500px;
+        }
+        h2 { color: #333; margin-bottom: 5px; }
+        #question {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 18px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 150px);
+            grid-gap: 10px;
+            justify-content: center;
+        }
+        .grid-item {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 3px solid transparent;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .grid-item:hover {
+            border-color: #007bff;
+            transform: scale(1.02);
+        }
+        #message {
+            margin-top: 20px;
+            font-weight: bold;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Xác thực danh tính</h2>
+    <div id="question">Đang khởi tạo...</div>
+    
+    <div class="grid-container" id="image-grid">
+        </div>
+    
+    <div id="message"></div>
+    <button onclick="loadCaptcha()" style="margin-top: 15px; cursor: pointer;">Đổi ảnh khác</button>
+</div>
+
+<script>
+    let targetAnimal = "";
+    let wrongCount = 0;      // Đếm số lần sai trong phiên hiện tại
+    let correctStreak = 0;   // Đếm số phiên đúng liên tiếp
+
+    function loadCaptcha() {
+        // Reset số lần sai khi sang phiên mới, nhưng giữ nguyên chuỗi đúng (correctStreak)
+        wrongCount = 0;
+        updateStatus();
+
+        fetch('/get_captcha')
+            .then(res => res.json())
+            .then(data => {
+                targetAnimal = data.target;
+                document.getElementById('question').innerHTML = 
+                    `Bước ${correctStreak + 1}/3: Hãy chọn hình có con: <b>${targetAnimal}</b>`;
+                
+                const grid = document.getElementById('image-grid');
+                grid.innerHTML = '';
+                
+                data.images.forEach(imgData => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = imgData.url + '?t=' + new Date().getTime();
+                    imgElement.className = 'grid-item';
+                    imgElement.onclick = () => verify(imgData.label);
+                    grid.appendChild(imgElement);
+                });
+            });
+    }
+
+    function verify(selectedLabel) {
+        const msg = document.getElementById('message');
+
+        if (selectedLabel === targetAnimal) {
+            // TRƯỜNG HỢP CHỌN ĐÚNG
+            correctStreak++;
+            
+            if (correctStreak >= 3) {
+                msg.style.color = "green";
+                msg.innerHTML = "🎉 XÁC THỰC THÀNH CÔNG! Bạn là con người thực thụ.";
+                document.getElementById('image-grid').innerHTML = "<h3>✅ Đã vượt qua kiểm tra</h3>";
+                document.getElementById('question').innerText = "Hoàn thành!";
+            } else {
+                msg.style.color = "blue";
+                msg.innerText = `Đúng rồi! Cần thêm ${3 - correctStreak} lần nữa...`;
+                setTimeout(loadCaptcha, 1000); // Chuyển sang phiên tiếp theo
+            }
+        } else {
+            // TRƯỜNG HỢP CHỌN SAI
+            wrongCount++;
+            
+            if (wrongCount >= 3) {
+                msg.style.color = "orange";
+                msg.innerText = "Sai quá 3 lần! Đang đổi bộ ảnh mới...";
+                correctStreak = 0; // Reset luôn chuỗi đúng nếu muốn gắt (tùy bạn chọn)
+                setTimeout(loadCaptcha, 1500); 
+            } else {
+                msg.style.color = "red";
+                msg.innerText = `Sai rồi! Bạn còn ${3 - wrongCount} lần thử lại bộ ảnh này.`;
+            }
+        }
+    }
+
+    function updateStatus() {
+        // Hàm này có thể dùng để cập nhật giao diện phụ nếu cần
+    }
+
+    loadCaptcha();
+</script>
+
+</body>
+</html>
