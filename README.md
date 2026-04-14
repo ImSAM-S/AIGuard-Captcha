@@ -25,8 +25,7 @@ Frontend: HTML5, CSS3, JavaScript
 Công cụ: GitHub, Discord, Canva (Design)
 
 # 📂 Cấu trúc thư mục
-Plaintext
-### Ai_Captcha/
+Ai_Captcha/
   ├── data/                                  # Thư mục chứa tập dữ liệu Animals-10
   ├── captcha_animal_model.h5                # Lưu trữ file model đã huấn luyện
   ├── static/                                # Các file CSS, JS, hình ảnh giao diện
