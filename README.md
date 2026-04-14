@@ -1,4 +1,5 @@
-AIGuard Captcha (FaunaGuard) 🛡️🐾
+#AIGuard Captcha (FaunaGuard) 🛡️🐾
+
 AIGuard Captcha là một hệ thống xác thực bảo mật thông minh, kết hợp giữa mạng nơ-ron sâu (Deep Learning) và các thuật toán học máy truyền thống để phân loại hành vi người dùng và ngăn chặn Bot. Dự án sử dụng bộ dữ liệu động vật đa dạng để tạo ra các thử thách nhận diện hình ảnh chính xác.
 
 🚀 Tính năng nổi bật
