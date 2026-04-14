@@ -26,14 +26,14 @@ Công cụ: GitHub, Discord, Canva (Design)
 
 # 📂 Cấu trúc thư mục
 Plaintext
-Ai_Captcha/
-├── data/                                  # Thư mục chứa tập dữ liệu Animals-10
-├── captcha_animal_model.h5                # Lưu trữ file model đã huấn luyện
-├── static/                                # Các file CSS, JS, hình ảnh giao diện
-├── templates/                             # Giao diện HTML
-├── app.py                                 # Backend chính xử lý logic và API
-├── train.py                               # Script huấn luyện và đánh giá mô hình
-└── README.md                              # Tài liệu hướng dẫn dự án
+### Ai_Captcha/
+  ├── data/                                  # Thư mục chứa tập dữ liệu Animals-10
+  ├── captcha_animal_model.h5                # Lưu trữ file model đã huấn luyện
+  ├── static/                                # Các file CSS, JS, hình ảnh giao diện
+  ├── templates/                             # Giao diện HTML
+  ├── app.py                                 # Backend chính xử lý logic và API
+  ├── train.py                               # Script huấn luyện và đánh giá mô hình
+  └── README.md                              # Tài liệu hướng dẫn dự án
 # 📊 Kết quả huấn luyện
 Hệ thống được huấn luyện trên tập dữ liệu 20.213 ảnh (Animals-10) với các chỉ số hiệu năng ấn tượng:
 
